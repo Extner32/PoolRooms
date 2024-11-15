@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://18buub3l55t1"]
+
+[ext_resource type="Texture2D" uid="uid://1ic41nvomagw" path="res://poolrooms/Texturelabs_Brick_151M.jpg" id="1_nrav8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c7q25"]
+albedo_texture = ExtResource("1_nrav8")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dvcwb"]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0, 0.509804, 0.435294, 0.717647)
+
+[sub_resource type="QuadMesh" id="QuadMesh_xsorr"]
+size = Vector2(20, 20)
+orientation = 1
+
+[node name="CSGCombiner3D" type="CSGCombiner3D"]
+material_override = SubResource("StandardMaterial3D_c7q25")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(20, 14, 20)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+operation = 2
+use_collision = true
+size = Vector3(18, 6, 18)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.254254, 0)
+material_override = SubResource("StandardMaterial3D_dvcwb")
+mesh = SubResource("QuadMesh_xsorr")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.36059, 0)
+omni_range = 16.6478
+omni_attenuation = 0.353553
