@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://32rpqoet6vep"]
+
+[ext_resource type="Shader" path="res://poolrooms/multiplanar.gdshader" id="1_drayh"]
+[ext_resource type="Texture2D" uid="uid://ck0vnt365oynp" path="res://poolrooms/tiles.jpg" id="2_n5v1n"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i01av"]
+render_priority = 0
+shader = ExtResource("1_drayh")
+shader_parameter/albedo_texture = ExtResource("2_n5v1n")
+
+[node name="Node3D" type="CSGCylinder3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0872485, 0)
+material_override = SubResource("ShaderMaterial_i01av")
+height = 1.166
+sides = 11

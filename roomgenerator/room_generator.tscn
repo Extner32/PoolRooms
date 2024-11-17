@@ -1,0 +1,56 @@
+[gd_scene load_steps=11 format=3 uid="uid://dgcrcvnrakkgc"]
+
+[ext_resource type="Script" path="res://roomgenerator/room_generator.gd" id="1_q6o8m"]
+[ext_resource type="Texture2D" uid="uid://cyobvobchxlpr" path="res://poolrooms/tiles_texture.png" id="1_sjexk"]
+[ext_resource type="Shader" path="res://water/water.gdshader" id="2_8na2r"]
+[ext_resource type="Texture2D" uid="uid://5afbh6lmfn3f" path="res://poolrooms/NormalMap.png" id="2_gvxlk"]
+[ext_resource type="Texture2D" uid="uid://dl0mao22yg5a8" path="res://water/water_normal_map1.png" id="3_n2qwr"]
+[ext_resource type="Texture2D" uid="uid://dqi77pdg85uy0" path="res://water/water_normal_map2.png" id="4_l55ev"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kudk2"]
+albedo_texture = ExtResource("1_sjexk")
+roughness = 0.13
+normal_enabled = true
+normal_scale = 6.02
+normal_texture = ExtResource("2_gvxlk")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2o3e7"]
+render_priority = 0
+shader = ExtResource("2_8na2r")
+shader_parameter/speed = 0.065
+shader_parameter/refraction = 0.045
+shader_parameter/fresnel_strength = 3.635
+shader_parameter/direction1 = Vector2(1, 0)
+shader_parameter/direction2 = Vector2(0, -0.5)
+shader_parameter/roughness = 1.09
+shader_parameter/wave_height = 0.485
+shader_parameter/color = Color(0.0405, 0.68175, 0.81, 1)
+shader_parameter/color2 = Color(0.0392157, 0.682353, 0.811765, 1)
+shader_parameter/uv_scale = 0.05
+shader_parameter/normal_map1 = ExtResource("3_n2qwr")
+shader_parameter/normal_map2 = ExtResource("4_l55ev")
+
+[sub_resource type="QuadMesh" id="QuadMesh_oje1d"]
+size = Vector2(100, 100)
+orientation = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_y2gsc"]
+
+[node name="RoomGenerator" type="CSGCombiner3D"]
+material_override = SubResource("StandardMaterial3D_kudk2")
+use_collision = true
+script = ExtResource("1_q6o8m")
+
+[node name="water" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_2o3e7")
+cast_shadow = 0
+mesh = SubResource("QuadMesh_oje1d")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_y2gsc")
+
+[node name="Walls" type="CSGBox3D" parent="."]
+size = Vector3(100, 100, 100)

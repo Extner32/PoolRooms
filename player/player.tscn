@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://bdgnbww3x6y48"]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_kq2hj"]
+[ext_resource type="Shader" path="res://player/water_screen.gdshader" id="2_csmwu"]
+[ext_resource type="Texture2D" uid="uid://dl0mao22yg5a8" path="res://water/water_normal_map1.png" id="3_htld7"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8lps1"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x4gvv"]
+shader = ExtResource("2_csmwu")
+shader_parameter/speed = 0.1
+shader_parameter/scale = 0.1
+shader_parameter/distortion = 0.02
+shader_parameter/direction = Vector2(1, 1)
+shader_parameter/color = Color(0.2088, 0.78184, 0.87, 1)
+shader_parameter/normal_map = ExtResource("3_htld7")
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+collision_mask = 0
+script = ExtResource("1_kq2hj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_8lps1")
+
+[node name="head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="Camera3D" type="Camera3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 0.938197, 0.346101, 0, -0.346101, 0.938197, 0, 0.695876, 2.2589)
+fov = 47.7
+
+[node name="SpotLight3D" type="SpotLight3D" parent="head"]
+light_color = Color(1, 0.932, 0.76, 1)
+shadow_enabled = true
+spot_range = 8.03238
+
+[node name="RayCast3D" type="RayCast3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+top_level = true
+target_position = Vector3(0, 0, -1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="WaterShader" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_x4gvv")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_right = 58.0
+offset_bottom = 23.0
+text = "test fps"

@@ -1,41 +1,45 @@
-[gd_scene load_steps=9 format=3 uid="uid://b2pdxf6durqch"]
+[gd_scene load_steps=7 format=3 uid="uid://b2pdxf6durqch"]
 
-[ext_resource type="Texture2D" uid="uid://1ic41nvomagw" path="res://poolrooms/Texturelabs_Brick_151M.jpg" id="1_e2r8p"]
-[ext_resource type="PackedScene" uid="uid://18buub3l55t1" path="res://poolrooms/pool_room.tscn" id="1_ljgsn"]
-[ext_resource type="PackedScene" uid="uid://7cpoou4cb4v5" path="res://poolrooms/pool/pool.tscn" id="2_g2huc"]
-[ext_resource type="Texture2D" uid="uid://c83o0ipw48388" path="res://poolrooms/NormalMap.jpg" id="2_hp7wy"]
+[ext_resource type="PackedScene" uid="uid://dgcrcvnrakkgc" path="res://roomgenerator/room_generator.tscn" id="3_hxyhd"]
+[ext_resource type="PackedScene" uid="uid://bdgnbww3x6y48" path="res://player/player.tscn" id="5_aewn0"]
+[ext_resource type="AudioStream" uid="uid://y1xvbn1mxa6s" path="res://poolrooms/water_ambience.mp3" id="7_w01l4"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vor4n"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5p080"]
 
-[sub_resource type="Sky" id="Sky_oe72c"]
-sky_material = SubResource("ProceduralSkyMaterial_vor4n")
+[sub_resource type="Sky" id="Sky_74woh"]
+sky_material = SubResource("ProceduralSkyMaterial_5p080")
 
 [sub_resource type="Environment" id="Environment_qy8lo"]
-background_mode = 2
-sky = SubResource("Sky_oe72c")
-tonemap_mode = 2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7nngw"]
-albedo_texture = ExtResource("1_e2r8p")
-normal_enabled = true
-normal_scale = 16.0
-normal_texture = ExtResource("2_hp7wy")
-uv1_scale = Vector3(0.5, 0.5, 0.5)
-uv1_triplanar = true
-uv1_world_triplanar = true
+background_mode = 1
+background_color = Color(0.91, 0.834167, 0.6825, 1)
+background_energy_multiplier = 0.0
+sky = SubResource("Sky_74woh")
+ambient_light_source = 2
+ambient_light_color = Color(0.91, 0.834167, 0.6825, 1)
+ambient_light_energy = 0.1
+tonemap_mode = 3
+ssr_enabled = true
+ssao_enabled = true
+glow_enabled = true
+glow_intensity = 0.03
+glow_strength = 1.06
+glow_bloom = 0.2
+glow_blend_mode = 4
+volumetric_fog_emission = Color(1, 1, 1, 1)
 
 [node name="World" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_qy8lo")
 
-[node name="PoolRooms" type="CSGCombiner3D" parent="."]
-material_override = SubResource("StandardMaterial3D_7nngw")
+[node name="CharacterBody3D" parent="." instance=ExtResource("5_aewn0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5, 1)
 
-[node name="PoolRoom" parent="PoolRooms" instance=ExtResource("1_ljgsn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.116418, 0, -0.106485)
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_w01l4")
+volume_db = -8.727
+autoplay = true
+parameters/looping = true
 
-[node name="Pool" parent="PoolRooms" instance=ExtResource("2_g2huc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.09235, -0.9, -0.318253)
+[node name="RoomGenerator" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_hxyhd")]
+player = NodePath("../CharacterBody3D")
